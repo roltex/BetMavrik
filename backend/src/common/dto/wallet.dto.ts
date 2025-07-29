@@ -1,19 +1,64 @@
-import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsArray, IsBoolean, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class WalletPlayDto {
+export class WalletActionDto {
   @IsString()
-  user_id: string;
+  action: 'bet' | 'win';
 
   @IsNumber()
   amount: number;
 
   @IsString()
+  action_id: string;
+}
+
+export class WalletPlayDto {
+  @IsString()
+  user_id: string;
+
+  @IsString()
+  currency: string;
+
+  @IsString()
+  game: string;
+
+  @IsString()
+  game_id: string;
+
+  @IsBoolean()
   @IsOptional()
-  transaction_id?: string;
+  finished?: boolean;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => WalletActionDto)
+  actions: WalletActionDto[];
+}
+
+export class WalletTransactionDto {
+  @IsString()
+  action_id: string;
 
   @IsString()
   @IsOptional()
-  game_id?: string;
+  tx_id?: string;
+
+  @IsString()
+  @IsOptional()
+  processed_at?: string;
+}
+
+export class WalletPlayResponseDto {
+  @IsNumber()
+  balance: number;
+
+  @IsString()
+  game_id: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => WalletTransactionDto)
+  transactions: WalletTransactionDto[];
 }
 
 export class WalletRollbackDto {

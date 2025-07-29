@@ -98,11 +98,11 @@ export class BalanceService {
     }
   }
 
-  async processBet(userId: string, amount: number, gameId?: string): Promise<BalanceDto> {
+  async processBet(userId: string, amount: number, gameId?: string, actionId?: string): Promise<BalanceDto> {
     try {
-      console.log(`🎲 Processing bet for user ${userId}: ${amount} (game: ${gameId})`);
+      console.log(`🎲 Processing bet for user ${userId}: ${amount} (game: ${gameId}, action: ${actionId})`);
       
-      const transactionId = `bet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const transactionId = actionId || `bet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       
       // Deduct bet amount
       const newBalance = await this.updateBalance(userId, -amount);
@@ -124,11 +124,11 @@ export class BalanceService {
     }
   }
 
-  async processWin(userId: string, amount: number, gameId?: string): Promise<BalanceDto> {
+  async processWin(userId: string, amount: number, gameId?: string, actionId?: string): Promise<BalanceDto> {
     try {
-      console.log(`🎉 Processing win for user ${userId}: ${amount} (game: ${gameId})`);
+      console.log(`🎉 Processing win for user ${userId}: ${amount} (game: ${gameId}, action: ${actionId})`);
       
-      const transactionId = `win_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const transactionId = actionId || `win_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       
       // Add win amount
       const newBalance = await this.updateBalance(userId, amount);

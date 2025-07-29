@@ -13,7 +13,7 @@ export class GamesService {
 
   constructor(private readonly hmacService: HmacService) {
     this.gcpUrl = process.env.GCP_URL || '';
-    this.returnUrl = process.env.RETURN_URL || 'http://localhost:3001/casino';
+    this.returnUrl = process.env.RETURN_URL || 'https://betmavrik-frontend.up.railway.app/casino';
     console.log('🔧 GamesService initialized with:');
     console.log('  GCP_URL:', this.gcpUrl);
     console.log('  RETURN_URL:', this.returnUrl);

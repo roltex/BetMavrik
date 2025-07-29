@@ -9,7 +9,12 @@ import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: [
+      'http://localhost:3000', 
+      'http://localhost:3001',
+      'https://betmavrik-frontend.up.railway.app',
+      'https://betmavrik-backend.up.railway.app'
+    ],
     credentials: true,
   },
 })

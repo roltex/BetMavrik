@@ -2,8 +2,8 @@ import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
 import { Game, User } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://betmavrik-backend.up.railway.app';
+const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://betmavrik-backend.up.railway.app';
 
 console.log('🔧 API Configuration:', { API_BASE_URL, WS_URL });
 

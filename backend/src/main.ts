@@ -11,6 +11,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3001', 
       'http://localhost:3000',
+      'https://betmavrik-backend.up.railway.app',
       'https://betmavrik-production.up.railway.app',
       /\.railway\.app$/,  // Allow all Railway subdomains
       /\.vercel\.app$/,   // Allow Vercel deployments

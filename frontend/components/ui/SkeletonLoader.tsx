@@ -77,7 +77,7 @@ export function GameSectionHeaderSkeleton() {
 }
 
 // Game section skeleton (horizontal slider)
-export function GameSectionSkeleton({ title, count = 8 }: { title?: string; count?: number }) {
+export function GameSectionSkeleton({ count = 8 }: { count?: number }) {
   return (
     <div className="relative px-2">
       <GameSectionHeaderSkeleton />
@@ -167,6 +167,15 @@ export function CasinoPageSkeleton() {
       <HeaderSkeleton />
       
       <main className="max-w-7xl mx-auto px-4 py-6">
+        {/* Promotional banners skeleton */}
+        <div className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <PromotionalBannerSkeleton key={index} />
+            ))}
+          </div>
+        </div>
+
         {/* Search bar skeleton */}
         <div className="mb-8">
           <Skeleton className="h-12 w-full rounded-lg" />
@@ -181,19 +190,10 @@ export function CasinoPageSkeleton() {
           </div>
         </div>
 
-        {/* Promotional banners skeleton */}
-        <div className="mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <PromotionalBannerSkeleton key={index} />
-            ))}
-          </div>
-        </div>
-
         {/* Game sections skeleton */}
         <div className="space-y-12">
-          <GameSectionSkeleton title="Stake Originals" count={8} />
-          <GameSectionSkeleton title="Slots" count={8} />
+          <GameSectionSkeleton count={8} />
+          <GameSectionSkeleton count={8} />
           <AllGamesSectionSkeleton />
         </div>
       </main>

@@ -78,7 +78,7 @@ export default function AllGamesSection({ games, onPlayGame, isLoading = false }
     const pages = [];
     const maxVisiblePages = 7;
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     // Adjust start if we're near the end
     if (endPage - startPage + 1 < maxVisiblePages) {

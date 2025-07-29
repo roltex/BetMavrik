@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { Game } from '@/types';
@@ -103,26 +104,29 @@ function PromotionalBanner({ game, onPlayGame }: { game: Game; onPlayGame?: (gam
     <div className={`relative h-48 rounded-lg overflow-hidden bg-gradient-to-r ${getBackgroundColor(game.id)} cursor-pointer group`}>
       {/* Background Image */}
       {!imageError && (
-        <img
+        <Image
           key={fallbackAttempt} // Force re-render when fallback changes
           src={getCurrentImageUrl()}
           alt={game.title}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+          fill
+          className={`object-cover object-center transition-opacity duration-300 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           onError={handleImageError}
           onLoad={handleImageLoad}
-          style={{ objectPosition: 'center' }}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          unoptimized // For external URLs
         />
       )}
       
       {/* Final fallback image when all attempts fail */}
       {imageError && (
-        <img
+        <Image
           src={getFinalFallback()}
           alt={game.title}
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-          style={{ objectPosition: 'center' }}
+          fill
+          className="object-cover object-center opacity-60"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       )}
 

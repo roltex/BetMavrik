@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Play } from 'lucide-react';
 import { Game } from '@/types';
 import { Skeleton } from '@/components/ui/SkeletonLoader';
@@ -67,15 +68,17 @@ export default function GameCard({ game, onPlay, type = 'slots', isLoading = fal
 
         {/* Game thumbnail */}
         {!imageError && (
-          <img
+          <Image
             src={getThumbnail()}
             alt={game.title}
-            className={`w-full h-full object-cover transition-all duration-300 ${
+            fill
+            className={`object-cover transition-all duration-300 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             onError={handleImageError}
             onLoad={handleImageLoad}
-            loading="lazy"
+            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 12.5vw"
+            unoptimized // For external URLs
           />
         )}
 

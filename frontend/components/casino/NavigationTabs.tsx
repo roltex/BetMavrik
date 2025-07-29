@@ -1,6 +1,6 @@
 'use client';
 
-import { Home, Sparkles, Grid3X3, Trophy, TrendingUp, Gamepad2, Star, RotateCcw } from 'lucide-react';
+import { Home, Sparkles, Grid3X3, Trophy, Gamepad2, Star, RotateCcw } from 'lucide-react';
 
 interface Tab {
   id: string;

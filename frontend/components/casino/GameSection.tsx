@@ -34,7 +34,7 @@ const getIcon = (iconName: string) => {
 
 export default function GameSection({ title, icon, games, type, onPlayGame, isLoading = false }: GameSectionProps) {
   if (isLoading) {
-    return <GameSectionSkeleton title={title} count={8} />;
+    return <GameSectionSkeleton count={8} />;
   }
 
   if (games.length === 0) return null;
@@ -122,7 +122,11 @@ export default function GameSection({ title, icon, games, type, onPlayGame, isLo
       >
         {games.map((game) => (
           <SwiperSlide key={game.id}>
-            <GameCard game={game} onPlay={onPlayGame} type={type === 'providers' ? 'slots' : type} />
+            <GameCard 
+              game={game} 
+              onPlay={onPlayGame} 
+              type={type === 'providers' ? 'slots' : type as 'slots' | 'originals'} 
+            />
           </SwiperSlide>
         ))}
       </Swiper>

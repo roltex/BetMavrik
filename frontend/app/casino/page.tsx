@@ -82,6 +82,13 @@ export default function CasinoPage() {
       <Header user={user} />
       
       <main className="max-w-7xl mx-auto px-4 py-6">
+        {/* Promotional Banners */}
+        {searchTerm === '' && (
+          <div className="mb-12">
+            <PromotionalBanners games={allGames} onPlayGame={handlePlayGame} />
+          </div>
+        )}
+
         {/* Search Bar */}
         <div className="mb-8">
           <SearchBar
@@ -93,13 +100,6 @@ export default function CasinoPage() {
 
         {/* Navigation Tabs */}
         <NavigationTabs activeTab={activeTab} onTabChange={setActiveTab} />
-
-        {/* Promotional Banners */}
-        {searchTerm === '' && (
-          <div className="mb-12">
-            <PromotionalBanners games={allGames} onPlayGame={handlePlayGame} />
-          </div>
-        )}
 
         {/* Game Sections */}
         <div className="space-y-12">

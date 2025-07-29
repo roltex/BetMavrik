@@ -1,9 +1,12 @@
 'use client';
 
 import { ChevronLeft, ChevronRight, Flame, Grid3X3, Network } from 'lucide-react';
-import { useRef } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
 import { Game } from '@/types';
 import GameCard from './GameCard';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 interface GameSectionProps {
   title: string;
@@ -20,23 +23,45 @@ const iconMap = {
 };
 
 export default function GameSection({ title, icon, games, type, onPlayGame }: GameSectionProps) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (!scrollContainerRef.current) return;
-    
-    const scrollAmount = 400;
-    const currentScroll = scrollContainerRef.current.scrollLeft;
-    
-    scrollContainerRef.current.scrollTo({
-      left: direction === 'left' 
-        ? currentScroll - scrollAmount 
-        : currentScroll + scrollAmount,
-      behavior: 'smooth'
-    });
-  };
-
   if (games.length === 0) return null;
+
+  const swiperBreakpoints = {
+    320: {
+      slidesPerView: 2,
+      spaceBetween: 12,
+      slidesPerGroup: 1,
+    },
+    480: {
+      slidesPerView: 2.5,
+      spaceBetween: 12,
+      slidesPerGroup: 1,
+    },
+    640: {
+      slidesPerView: 3,
+      spaceBetween: 16,
+      slidesPerGroup: 2,
+    },
+    768: {
+      slidesPerView: 4,
+      spaceBetween: 16,
+      slidesPerGroup: 2,
+    },
+    1024: {
+      slidesPerView: 6,
+      spaceBetween: 16,
+      slidesPerGroup: 3,
+    },
+    1280: {
+      slidesPerView: 8,
+      spaceBetween: 20,
+      slidesPerGroup: 4,
+    },
+    1536: {
+      slidesPerView: 8,
+      spaceBetween: 20,
+      slidesPerGroup: 4,
+    },
+  };
 
   return (
     <div className="relative">
@@ -49,15 +74,13 @@ export default function GameSection({ title, icon, games, type, onPlayGame }: Ga
         
         <div className="flex items-center gap-2">
           <button
-            onClick={() => scroll('left')}
-            className="p-2 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors"
+            className={`${title.replace(/\s+/g, '-').toLowerCase()}-prev p-2 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors`}
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
-            onClick={() => scroll('right')}
-            className="p-2 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors"
+            className={`${title.replace(/\s+/g, '-').toLowerCase()}-next p-2 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors`}
             aria-label="Scroll right"
           >
             <ChevronRight className="w-4 h-4" />
@@ -65,23 +88,26 @@ export default function GameSection({ title, icon, games, type, onPlayGame }: Ga
         </div>
       </div>
 
-      {/* Games container */}
+      {/* Games container with Swiper */}
       <div className="relative">
-        <div
-          ref={scrollContainerRef}
-          className="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth"
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={16}
+          slidesPerView={8}
+          slidesPerGroup={4}
+          navigation={{
+            nextEl: `.${title.replace(/\s+/g, '-').toLowerCase()}-next`,
+            prevEl: `.${title.replace(/\s+/g, '-').toLowerCase()}-prev`,
+          }}
+          breakpoints={swiperBreakpoints}
+          className="game-section-swiper"
         >
           {games.map((game) => (
-            <div
-              key={game.id}
-              className={`flex-shrink-0 ${
-                type === 'originals' ? 'w-44' : 'w-52'
-              }`}
-            >
+            <SwiperSlide key={game.id}>
               <GameCard game={game} onPlay={onPlayGame} type={type} />
-            </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </div>
   );

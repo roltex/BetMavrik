@@ -80,7 +80,7 @@ export default function CasinoPage() {
       <main className="container mx-auto px-4 py-6">
         {/* Promotional Banners */}
         <div className="mb-8">
-          <PromotionalBanners />
+          <PromotionalBanners games={games} onPlayGame={handlePlayGame} />
         </div>
         
         {/* Search Bar */}
@@ -103,7 +103,7 @@ export default function CasinoPage() {
             <GameSection 
               title="Stake Originals" 
               icon="fire"
-              games={stakeOriginals.slice(0, 8)}
+              games={stakeOriginals.slice(0, 12)}
               type="originals"
               onPlayGame={handlePlayGame}
             />
@@ -113,7 +113,7 @@ export default function CasinoPage() {
             <GameSection 
               title="Slots" 
               icon="slots"
-              games={slots.slice(0, 7)}
+              games={slots.slice(0, 15)}
               type="slots"
               onPlayGame={handlePlayGame}
             />
@@ -122,7 +122,7 @@ export default function CasinoPage() {
           <GameSection 
             title="Providers" 
             icon="network"
-            games={allGames.slice(0, 20)}
+            games={allGames.slice(0, 30)}
             type="providers"
             onPlayGame={handlePlayGame}
           />

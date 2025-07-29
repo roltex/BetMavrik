@@ -79,6 +79,40 @@ export class WalletController {
     }
   }
 
+  @Get('test-balance/:userId')
+  async testBalance(@Param('userId') userId: string) {
+    try {
+      console.log(`🧪 Testing balance operations for user: ${userId}`);
+      
+      // Get current balance
+      const currentBalance = await this.balanceService.getBalance(userId);
+      console.log(`💰 Current balance: ${currentBalance}`);
+      
+      // Test bet operation
+      const betResult = await this.balanceService.processBet(userId, 10, 'test-game');
+      console.log(`🎲 After bet: ${betResult.balance}`);
+      
+      // Test win operation
+      const winResult = await this.balanceService.processWin(userId, 5, 'test-game');
+      console.log(`🎉 After win: ${winResult.balance}`);
+      
+      return {
+        success: true,
+        operations: {
+          initial: currentBalance,
+          afterBet: betResult.balance,
+          afterWin: winResult.balance
+        }
+      };
+    } catch (error) {
+      console.error('❌ Test balance failed:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
   @Get('transactions/:userId')
   async getTransactions(@Param('userId') userId: string): Promise<TransactionDto[]> {
     try {

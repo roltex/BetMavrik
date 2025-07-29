@@ -1,4 +1,5 @@
 import { IsString, IsNumber, IsOptional, IsUrl, IsBoolean, IsArray } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateGameSessionDto {
   @IsNumber()
@@ -128,4 +129,60 @@ export class GameSessionDto {
 
   @IsNumber()
   game_id: number;
+}
+
+export class FreespinsUserDto {
+  @IsString()
+  @IsOptional()
+  user_id?: string;
+
+  @IsString()
+  firstname: string;
+
+  @IsString()
+  lastname: string;
+
+  @IsString()
+  nickname: string;
+
+  @IsString()
+  city: string;
+
+  @IsString()
+  date_of_birth: string;
+
+  @IsString()
+  registered_at: string;
+
+  @IsString()
+  gender: 'm' | 'f';
+
+  @IsString()
+  country: string;
+}
+
+export class CreateFreespinsDto {
+  @IsString()
+  game: string;
+
+  @IsString()
+  currency: string;
+
+  @IsNumber()
+  betlevel: number;
+
+  @IsNumber()
+  freespincount: number;
+
+  @IsString()
+  expiretime: string; // Format: "2025-05-12 10:00:00"
+
+  @IsOptional()
+  @Type(() => FreespinsUserDto)
+  user?: FreespinsUserDto;
+}
+
+export class FreespinsResponseDto {
+  @IsString()
+  identifier: string;
 } 

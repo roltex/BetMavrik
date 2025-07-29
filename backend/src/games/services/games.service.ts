@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { HmacService } from '../../common/services/hmac.service';
-import { GameDto, CreateGameSessionDto, GameSessionDto } from '../../common/dto/game.dto';
+import { GameDto, CreateGameSessionDto, GameSessionDto, CreateFreespinsDto, FreespinsResponseDto } from '../../common/dto/game.dto';
 
 @Injectable()
 export class GamesService {
@@ -145,6 +145,64 @@ export class GamesService {
       console.error('📤 Request data:', JSON.stringify(sessionData, null, 2));
       throw new HttpException(
         'Failed to create game session',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async createFreespins(freespinsDto: CreateFreespinsDto, userData: any): Promise<FreespinsResponseDto> {
+    const freespinsData = {
+      game: freespinsDto.game,
+      currency: freespinsDto.currency,
+      user: {
+        user_id: userData.id,
+        nickname: userData.username,
+        firstname: userData.firstname,
+        lastname: userData.lastname,
+        country: userData.country,
+        city: userData.city,
+        date_of_birth: userData.date_of_birth,
+        registered_at: userData.registered_at,
+        gender: userData.gender
+      },
+      betlevel: freespinsDto.betlevel,
+      freespincount: freespinsDto.freespincount,
+      expiretime: freespinsDto.expiretime
+    };
+
+    try {
+      const body = JSON.stringify(freespinsData);
+      const headers = this.hmacService.getHeaders(body);
+      
+      console.log('🎁 Creating freespins with data:', JSON.stringify(freespinsData, null, 2));
+      console.log('📡 Request headers:', headers);
+      
+      const response = await axios.post(
+        `${this.gcpUrl}freespins`,
+        body,
+        { headers }
+      );
+      
+      if (response.data && response.data.identifier) {
+        console.log(`✅ Freespins created successfully: ${response.data.identifier}`);
+        return {
+          identifier: response.data.identifier,
+        };
+      }
+      
+      throw new HttpException(
+        'Invalid response from GCP',
+        HttpStatus.BAD_REQUEST,
+      );
+    } catch (error) {
+      console.error('❌ Failed to create freespins:', error.message);
+      if (error.response) {
+        console.error('📊 Response status:', error.response.status);
+        console.error('📋 Response data:', error.response.data);
+      }
+      console.error('📤 Request data:', JSON.stringify(freespinsData, null, 2));
+      throw new HttpException(
+        'Failed to create freespins',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

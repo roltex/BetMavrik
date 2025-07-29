@@ -23,4 +23,16 @@ export interface Game {
   recalled_at?: string;
   restrictions?: Record<string, any>;
   playing?: number;
+}
+
+export interface CreateFreespinsRequest {
+  game: string;
+  currency: string;
+  betlevel: number;
+  freespincount: number;
+  expiretime: string; // Format: "2025-05-12 10:00:00"
+}
+
+export interface FreespinsResponse {
+  identifier: string;
 } 

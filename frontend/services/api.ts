@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
-import { Game, User } from '@/types';
+import { Game, User, CreateFreespinsRequest, FreespinsResponse } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://betmavrik-backend.up.railway.app';
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'wss://betmavrik-backend.up.railway.app';
@@ -86,6 +86,33 @@ class ApiService {
       return response.data.url;
     } catch (error) {
       console.error('❌ Error starting game:', error);
+      
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response: { status: number; data: unknown } };
+        console.error('❌ Server response status:', axiosError.response.status);
+        console.error('❌ Server response data:', axiosError.response.data);
+      }
+      
+      throw error;
+    }
+  }
+
+  async startFreespins(freespinsData: CreateFreespinsRequest): Promise<FreespinsResponse> {
+    try {
+      console.log('🎁 Starting freespins:', freespinsData);
+      console.log('📡 API endpoint:', `${API_BASE_URL}/games/freespins`);
+      
+      const response = await axios.post(`${API_BASE_URL}/games/freespins`, freespinsData);
+      
+      console.log('📥 Freespins response:', response.data);
+      
+      if (!response.data.identifier) {
+        throw new Error('No identifier received in freespins response');
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error('❌ Error starting freespins:', error);
       
       if (error && typeof error === 'object' && 'response' in error) {
         const axiosError = error as { response: { status: number; data: unknown } };

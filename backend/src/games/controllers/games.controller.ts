@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { GamesService } from '../services/games.service';
 import { UsersService } from '../../users/services/users.service';
-import { GameDto, CreateGameSessionDto, GameSessionDto } from '../../common/dto/game.dto';
+import { GameDto, CreateGameSessionDto, GameSessionDto, CreateFreespinsDto, FreespinsResponseDto } from '../../common/dto/game.dto';
 
 @Controller('games')
 export class GamesController {
@@ -26,6 +26,22 @@ export class GamesController {
       console.error('Failed to get user data for session creation:', error);
       throw new HttpException(
         'Failed to create game session',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post('freespins')
+  async createFreespins(@Body() freespinsDto: CreateFreespinsDto): Promise<FreespinsResponseDto> {
+    try {
+      // Get current user data dynamically
+      const userData = await this.usersService.getCurrentUser();
+      
+      return await this.gamesService.createFreespins(freespinsDto, userData);
+    } catch (error) {
+      console.error('Failed to create freespins:', error);
+      throw new HttpException(
+        'Failed to create freespins',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

@@ -36,7 +36,7 @@ export class UserDto {
 
   @IsString()
   @IsOptional()
-  registred_at?: string;
+  registered_at?: string;
 
   @IsString()
   @IsIn(['m', 'f'])
@@ -74,7 +74,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
-  registred_at?: string;
+  registered_at?: string;
 
   @IsString()
   @IsIn(['m', 'f'])

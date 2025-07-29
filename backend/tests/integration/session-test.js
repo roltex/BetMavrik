@@ -51,7 +51,7 @@ async function testSession() {
         country: 'US',
         city: 'New York',
         date_of_birth: '1990-01-01',
-        registred_at: '2024-01-01',
+        registered_at: '2024-01-01',
         gender: 'm'
       }
     };

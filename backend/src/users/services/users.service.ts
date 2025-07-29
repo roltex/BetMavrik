@@ -17,7 +17,7 @@ export class UsersService {
       country: 'Geo',
       city: 'Tbilisi',
       date_of_birth: '1988-10-17',
-      registred_at: '2024-01-01',
+      registered_at: '2024-01-01',
       gender: 'm'
     }).then(user => {
       this.currentUserId = user.id;
@@ -38,7 +38,7 @@ export class UsersService {
       country: createUserDto.country || 'US',
       city: createUserDto.city || 'New York',
       date_of_birth: createUserDto.date_of_birth || '1990-01-01',
-      registred_at: createUserDto.registred_at || '2024-01-01',
+      registered_at: createUserDto.registered_at || '2024-01-01',
       gender: createUserDto.gender || 'm'
     };
     
@@ -57,7 +57,7 @@ export class UsersService {
         country: 'US',
         city: 'New York',
         date_of_birth: '1990-01-01',
-        registred_at: '2024-01-01',
+        registered_at: '2024-01-01',
         gender: 'm'
       });
       this.currentUserId = user.id;

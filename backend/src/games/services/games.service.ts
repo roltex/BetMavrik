@@ -106,7 +106,7 @@ export class GamesService {
         country: userData.country,
         city: userData.city,
         date_of_birth: userData.date_of_birth,
-        registred_at: userData.registred_at,
+        registered_at: userData.registered_at,
         gender: userData.gender
       }
     };

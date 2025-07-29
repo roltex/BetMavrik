@@ -68,11 +68,31 @@ class ApiService {
 
   async startGame(gameId: number): Promise<string> {
     try {
-      console.log('🚀 Starting game:', gameId);
-      const response = await axios.post(`${API_BASE_URL}/games`, { game_id: gameId });
+      console.log('🚀 Starting game with ID:', gameId);
+      console.log('📡 API endpoint:', `${API_BASE_URL}/games`);
+      
+      const requestData = { game_id: gameId };
+      console.log('📤 Request data:', requestData);
+      
+      const response = await axios.post(`${API_BASE_URL}/games`, requestData);
+      
+      console.log('📥 Full response:', response);
+      console.log('🎮 Game URL:', response.data.url);
+      
+      if (!response.data.url) {
+        throw new Error('No URL received in response');
+      }
+      
       return response.data.url;
     } catch (error) {
       console.error('❌ Error starting game:', error);
+      
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response: { status: number; data: unknown } };
+        console.error('❌ Server response status:', axiosError.response.status);
+        console.error('❌ Server response data:', axiosError.response.data);
+      }
+      
       throw error;
     }
   }

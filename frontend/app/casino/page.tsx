@@ -46,12 +46,50 @@ export default function CasinoPage() {
 
   const handlePlayGame = async (gameId: number) => {
     try {
+      console.log('🎮 Attempting to start game:', gameId);
+      
       const gameUrl = await apiService.startGame(gameId);
+      console.log('✅ Received game URL:', gameUrl);
+      
       if (gameUrl) {
-        window.open(gameUrl, '_blank');
+        console.log('🚀 Opening game in new window...');
+        
+        // Try to open the game
+        const gameWindow = window.open(gameUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+        
+        if (gameWindow) {
+          console.log('✅ Game window opened successfully');
+          
+          // Check if window was blocked after a short delay
+          setTimeout(() => {
+            if (gameWindow.closed) {
+              console.warn('⚠️ Game window was closed or blocked');
+              alert('Game window was blocked by popup blocker. Please allow popups for this site.');
+            }
+          }, 1000);
+        } else {
+          console.error('❌ Failed to open game window - popup blocked?');
+          alert('Unable to open game. Please disable popup blocker and try again.');
+        }
+      } else {
+        console.error('❌ No game URL received');
+        alert('Failed to get game URL from server');
       }
     } catch (error) {
-      console.error('Failed to start game:', error);
+      console.error('❌ Failed to start game:', error);
+      
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response: { data?: { message?: string } } };
+        console.error('Server response:', axiosError.response.data);
+        alert(`Game failed to start: ${axiosError.response.data?.message || 'Server error'}`);
+      } else if (error && typeof error === 'object' && 'request' in error) {
+        console.error('Network error:', (error as { request: unknown }).request);
+        alert('Network error - please check your connection');
+      } else {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('Error details:', errorMessage);
+        alert(`Game failed to start: ${errorMessage}`);
+      }
     }
   };
 

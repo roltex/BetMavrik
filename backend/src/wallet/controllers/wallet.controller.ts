@@ -79,6 +79,50 @@ export class WalletController {
     }
   }
 
+  @Post('play-debug')
+  async handlePlayDebug(@Body() playDto: WalletPlayDto) {
+    try {
+      console.log('🧪 DEBUG: Wallet play request without HMAC guard:', playDto);
+      console.log('🧪 DEBUG: Request user_id type:', typeof playDto.user_id);
+      console.log('🧪 DEBUG: Request amount type:', typeof playDto.amount);
+      
+      let result: { user_id: string; balance: number };
+      
+      if (playDto.amount < 0) {
+        // This is a bet (negative amount)
+        console.log(`🎲 DEBUG: Processing bet: ${Math.abs(playDto.amount)} for user ${playDto.user_id}`);
+        result = await this.balanceService.processBet(
+          playDto.user_id,
+          Math.abs(playDto.amount),
+          playDto.game_id,
+        );
+      } else {
+        // This is a win (positive amount)
+        console.log(`🎉 DEBUG: Processing win: ${playDto.amount} for user ${playDto.user_id}`);
+        result = await this.balanceService.processWin(
+          playDto.user_id,
+          playDto.amount,
+          playDto.game_id,
+        );
+      }
+
+      console.log('✅ DEBUG: Wallet operation successful:', result);
+
+      // Notify all connected clients about balance change
+      this.webSocketGateway.notifyBalanceChange(result.user_id, result.balance);
+
+      return result;
+    } catch (error) {
+      console.error('❌ DEBUG: Wallet operation failed:', error);
+      return {
+        error: {
+          code: -1,
+          description: `Error: ${error.message}`
+        }
+      };
+    }
+  }
+
   @Get('test-balance/:userId')
   async testBalance(@Param('userId') userId: string) {
     try {

@@ -69,13 +69,13 @@ export default function GameSection({ title, icon, games, type, onPlayGame }: Ga
       <div className="relative">
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth"
+          className="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth"
         >
           {games.map((game) => (
             <div
               key={game.id}
               className={`flex-shrink-0 ${
-                type === 'originals' ? 'w-48' : 'w-64'
+                type === 'originals' ? 'w-44' : 'w-52'
               }`}
             >
               <GameCard game={game} onPlay={onPlayGame} type={type} />

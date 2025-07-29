@@ -70,6 +70,27 @@ body {
   opacity: 1 !important;
 }
 
+/* Vertical swiper styles */
+.promotional-swiper .swiper-pagination {
+  right: 16px !important;
+  left: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.promotional-swiper .swiper-pagination-bullets {
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.promotional-swiper .swiper-pagination-bullet {
+  width: 8px !important;
+  height: 8px !important;
+  margin: 0 !important;
+}
+
 /* Game card hover effect */
 .game-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;

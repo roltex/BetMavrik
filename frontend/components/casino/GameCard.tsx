@@ -12,9 +12,17 @@ interface GameCardProps {
 
 export default function GameCard({ game, onPlay, type = 'slots' }: GameCardProps) {
   const getThumbnail = () => {
-    if (type === 'originals') {
-      return game.thumbnail_vertical || game.thumbnail || `https://thumb.all-ingame.com/iv2/${game.id}.png`;
+    // Always prefer vertical images for a more vertical-oriented layout
+    if (game.thumbnail_vertical) {
+      return game.thumbnail_vertical;
     }
+    
+    // Use the vertical URL format from the endpoint as first fallback
+    if (game.id) {
+      return `https://thumb.all-ingame.com/vertical/${game.id}.png`;
+    }
+    
+    // Final fallback to regular thumbnail or default URL
     return game.thumbnail || `https://thumb.all-ingame.com/iv2/${game.id}.png`;
   };
 
@@ -24,7 +32,7 @@ export default function GameCard({ game, onPlay, type = 'slots' }: GameCardProps
       onClick={() => onPlay(game.id)}
     >
       <div className={`relative overflow-hidden rounded-lg bg-[#2f3241] ${
-        type === 'originals' ? 'aspect-[3/4]' : 'aspect-video'
+        type === 'originals' ? 'aspect-[3/4]' : 'aspect-[4/5]'
       }`}>
         <Image
           src={getThumbnail()}

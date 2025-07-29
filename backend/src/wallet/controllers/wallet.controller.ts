@@ -56,17 +56,22 @@ export class WalletController {
   @UseGuards(HmacGuard)
   async handleRollback(@Body() rollbackDto: WalletRollbackDto) {
     try {
+      console.log('↩️ Wallet rollback request:', rollbackDto);
+      
       const result = await this.balanceService.processRollback(
         rollbackDto.user_id,
         rollbackDto.transaction_id,
-        rollbackDto.amount,
+        // gameId is optional, and rollbackDto doesn't have game_id field
       );
+
+      console.log('✅ Rollback operation successful:', result);
 
       // Notify all connected clients about balance change
       this.webSocketGateway.notifyBalanceChange(result.user_id, result.balance);
 
       return result;
     } catch (error) {
+      console.error('❌ Rollback operation failed:', error);
       throw new HttpException(
         error.message || 'Failed to process rollback',
         HttpStatus.BAD_REQUEST,

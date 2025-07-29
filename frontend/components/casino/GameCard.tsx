@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Play } from 'lucide-react';
 import { Game, CreateFreespinsRequest } from '@/types';
 import { apiService } from '@/services/api';
 import { Skeleton } from '@/components/ui/SkeletonLoader';

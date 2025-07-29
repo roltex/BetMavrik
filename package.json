@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cd backend && npm install && npm run build",
+    "install-backend": "cd backend && npm ci",
+    "build-backend": "cd backend && npm run build",
+    "list-dist": "ls -la backend/dist/ || echo 'dist folder not found'",
+    "build": "npm run install-backend && npm run build-backend && npm run list-dist",
     "start": "cd backend && npm run start:prod",
     "dev": "cd backend && npm run start:dev"
   },

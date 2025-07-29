@@ -23,7 +23,7 @@ const getGameThumbnail = (game: Game) => {
   }
   
   // Final fallback: Use horizontal URL format
-  return `https://thumb.all-ingame.com/horizontal/${game.id}.png`;
+  return `https://thumb.all-ingame.com/vertical/${game.id}.png`;
 };
 
 const getBackgroundColor = (gameId: number) => {
@@ -58,8 +58,8 @@ const getGameDescription = (game: Game) => {
 };
 
 export default function PromotionalBanners({ games, onPlayGame }: PromotionalBannersProps) {
-  // Use the last 10 games for variety, but only show 3 at a time
-  const promotionalGames = games.slice(-10).reverse(); // Get last 10 and reverse to show newest first
+  // Use the first 10 games from the API
+  const promotionalGames = games.slice(0, 10);
   
   if (promotionalGames.length === 0) {
     return (

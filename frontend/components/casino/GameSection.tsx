@@ -64,7 +64,7 @@ export default function GameSection({ title, icon, games, type, onPlayGame }: Ga
   };
 
   return (
-    <div className="relative">
+    <div className="relative px-2">
       {/* Section header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">

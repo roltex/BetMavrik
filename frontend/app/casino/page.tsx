@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Header from '@/components/layout/Header';
 import PromotionalBanners from '@/components/casino/PromotionalBanners';
-import SearchBar from '@/components/ui/SearchBar';
 import NavigationTabs from '@/components/casino/NavigationTabs';
 import GameSection from '@/components/casino/GameSection';
+import AllGamesSection from '@/components/casino/AllGamesSection';
+import SearchBar from '@/components/ui/SearchBar';
+import Header from '@/components/layout/Header';
 import { Game, User } from '@/types';
 import { apiService } from '@/services/api';
 
@@ -77,7 +78,7 @@ export default function CasinoPage() {
     <div className="min-h-screen bg-[#1a1d29]">
       <Header user={user} />
       
-      <main className="container mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 py-6">
         {/* Promotional Banners */}
         <div className="mb-8">
           <PromotionalBanners games={games} onPlayGame={handlePlayGame} />
@@ -119,11 +120,9 @@ export default function CasinoPage() {
             />
           )}
           
-          <GameSection 
-            title="Providers" 
-            icon="network"
-            games={allGames.slice(0, 30)}
-            type="providers"
+          {/* All Games Section with Pagination */}
+          <AllGamesSection 
+            games={allGames}
             onPlayGame={handlePlayGame}
           />
         </div>

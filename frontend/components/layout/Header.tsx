@@ -31,7 +31,7 @@ export default function Header({ user }: HeaderProps) {
 
   return (
     <header className="bg-[#1a1d29] border-b border-[#2f3241]">
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">

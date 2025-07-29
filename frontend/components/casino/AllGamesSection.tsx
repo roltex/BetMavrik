@@ -1,18 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Grid3X3 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Grid3X3, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Game } from '@/types';
 import GameCard from './GameCard';
+import { AllGamesSectionSkeleton } from '@/components/ui/SkeletonLoader';
 
 interface AllGamesSectionProps {
   games: Game[];
   onPlayGame: (gameId: number) => void;
+  isLoading?: boolean;
 }
 
-export default function AllGamesSection({ games, onPlayGame }: AllGamesSectionProps) {
+export default function AllGamesSection({ games, onPlayGame, isLoading = false }: AllGamesSectionProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const gamesPerPage = 20;
+  const [isChangingPage, setIsChangingPage] = useState(false);
+  const gamesPerPage = 32;
+
+  if (isLoading) {
+    return <AllGamesSectionSkeleton />;
+  }
 
   if (games.length === 0) return null;
 
@@ -21,11 +28,25 @@ export default function AllGamesSection({ games, onPlayGame }: AllGamesSectionPr
   const startIndex = (currentPage - 1) * gamesPerPage;
   const endIndex = startIndex + gamesPerPage;
   const currentGames = games.slice(startIndex, endIndex);
+  const showingStart = startIndex + 1;
+  const showingEnd = Math.min(endIndex, games.length);
 
-  const goToPage = (page: number) => {
+  const goToPage = async (page: number) => {
+    if (page === currentPage || isChangingPage) return;
+    
+    setIsChangingPage(true);
     setCurrentPage(page);
-    // Scroll to top of section when page changes
-    document.getElementById('all-games-section')?.scrollIntoView({ behavior: 'smooth' });
+    
+    // Scroll to top of section with smooth animation
+    document.getElementById('all-games-section')?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+    
+    // Small delay for better UX
+    setTimeout(() => {
+      setIsChangingPage(false);
+    }, 300);
   };
 
   const goToPrevPage = () => {
@@ -40,10 +61,22 @@ export default function AllGamesSection({ games, onPlayGame }: AllGamesSectionPr
     }
   };
 
+  const goToFirstPage = () => {
+    if (currentPage > 1) {
+      goToPage(1);
+    }
+  };
+
+  const goToLastPage = () => {
+    if (currentPage < totalPages) {
+      goToPage(totalPages);
+    }
+  };
+
   // Generate page numbers for pagination
   const getPageNumbers = () => {
     const pages = [];
-    const maxVisiblePages = 5;
+    const maxVisiblePages = 7;
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
@@ -62,100 +95,163 @@ export default function AllGamesSection({ games, onPlayGame }: AllGamesSectionPr
   return (
     <div id="all-games-section" className="relative px-2">
       {/* Section header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <span className="text-[#3b82f6]">
-            <Grid3X3 className="w-5 h-5" />
-          </span>
-          <h2 className="text-xl font-bold text-white">All Games</h2>
-          <span className="text-gray-400 text-sm">
-            ({games.length} games)
-          </span>
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-[#3b82f6]/10 border border-[#3b82f6]/20">
+            <Grid3X3 className="w-5 h-5 text-[#3b82f6]" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-white">All Games</h2>
+            <p className="text-sm text-gray-400 mt-1">
+              Showing {showingStart}-{showingEnd} of {games.length} games
+            </p>
+          </div>
         </div>
         
         {totalPages > 1 && (
-          <div className="text-sm text-gray-400">
-            Page {currentPage} of {totalPages}
+          <div className="hidden md:flex items-center gap-3 text-sm">
+            <span className="text-gray-400">Page</span>
+            <div className="flex items-center gap-1 px-3 py-1.5 bg-[#2f3241] rounded-lg border border-[#3f4251]">
+              <span className="text-white font-medium">{currentPage}</span>
+              <span className="text-gray-500">of</span>
+              <span className="text-gray-400">{totalPages}</span>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Games grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 mb-8">
-        {currentGames.map((game) => (
-          <div key={game.id}>
-            <GameCard game={game} onPlay={onPlayGame} type="slots" />
-          </div>
-        ))}
+      {/* Games grid with loading state */}
+      <div className={`transition-opacity duration-300 ${isChangingPage ? 'opacity-50' : 'opacity-100'}`}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 mb-12">
+          {currentGames.map((game) => (
+            <div key={game.id} className="transform transition-transform duration-200 hover:scale-[1.02]">
+              <GameCard game={game} onPlay={onPlayGame} type="slots" isLoading={isChangingPage} />
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Pagination */}
+      {/* Enhanced Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2">
-          {/* Previous button */}
-          <button
-            onClick={goToPrevPage}
-            disabled={currentPage === 1}
-            className="p-2 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Previous page"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
+        <div className="flex flex-col items-center gap-6 pb-8">
+          {/* Mobile pagination info */}
+          <div className="md:hidden text-center">
+            <p className="text-sm text-gray-400">
+              Page {currentPage} of {totalPages}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Showing {showingStart}-{showingEnd} of {games.length} games
+            </p>
+          </div>
 
-          {/* First page */}
-          {getPageNumbers()[0] > 1 && (
-            <>
-              <button
-                onClick={() => goToPage(1)}
-                className="px-3 py-2 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors"
-              >
-                1
-              </button>
-              {getPageNumbers()[0] > 2 && (
-                <span className="text-gray-500">...</span>
-              )}
-            </>
-          )}
-
-          {/* Page numbers */}
-          {getPageNumbers().map((page) => (
+          {/* Pagination controls */}
+          <div className="flex items-center gap-2">
+            {/* First page button */}
             <button
-              key={page}
-              onClick={() => goToPage(page)}
-              className={`px-3 py-2 rounded-lg transition-colors ${
-                page === currentPage
-                  ? 'bg-[#3b82f6] text-white'
-                  : 'bg-[#2f3241] hover:bg-[#3f4251] text-white'
-              }`}
+              onClick={goToFirstPage}
+              disabled={currentPage === 1 || isChangingPage}
+              className="hidden sm:flex items-center justify-center w-10 h-10 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#2f3241] group"
+              aria-label="First page"
+              title="Go to first page"
             >
-              {page}
+              <ChevronsLeft className="w-4 h-4 group-hover:scale-110 transition-transform" />
             </button>
-          ))}
 
-          {/* Last page */}
-          {getPageNumbers()[getPageNumbers().length - 1] < totalPages && (
-            <>
-              {getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1 && (
-                <span className="text-gray-500">...</span>
+            {/* Previous button */}
+            <button
+              onClick={goToPrevPage}
+              disabled={currentPage === 1 || isChangingPage}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#2f3241] group"
+              aria-label="Previous page"
+              title="Go to previous page"
+            >
+              <ChevronLeft className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            </button>
+
+            {/* Page numbers */}
+            <div className="flex items-center gap-1">
+              {/* First page if not in visible range */}
+              {getPageNumbers()[0] > 1 && (
+                <>
+                  <button
+                    onClick={() => goToPage(1)}
+                    disabled={isChangingPage}
+                    className="hidden sm:flex items-center justify-center min-w-[40px] h-10 px-3 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-all duration-200 hover:scale-105 disabled:opacity-50"
+                  >
+                    1
+                  </button>
+                  {getPageNumbers()[0] > 2 && (
+                    <div className="hidden sm:flex items-center justify-center w-8 h-10">
+                      <span className="text-gray-500 text-sm">⋯</span>
+                    </div>
+                  )}
+                </>
               )}
-              <button
-                onClick={() => goToPage(totalPages)}
-                className="px-3 py-2 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors"
-              >
-                {totalPages}
-              </button>
-            </>
-          )}
 
-          {/* Next button */}
-          <button
-            onClick={goToNextPage}
-            disabled={currentPage === totalPages}
-            className="p-2 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Next page"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+              {/* Visible page numbers */}
+              {getPageNumbers().map((page) => (
+                <button
+                  key={page}
+                  onClick={() => goToPage(page)}
+                  disabled={isChangingPage}
+                  className={`flex items-center justify-center min-w-[40px] h-10 px-3 rounded-lg transition-all duration-200 hover:scale-105 disabled:opacity-50 ${
+                    page === currentPage
+                      ? 'bg-[#3b82f6] text-white shadow-lg shadow-[#3b82f6]/25 scale-105'
+                      : 'bg-[#2f3241] hover:bg-[#3f4251] text-white'
+                  }`}
+                >
+                  <span className="font-medium">{page}</span>
+                </button>
+              ))}
+
+              {/* Last page if not in visible range */}
+              {getPageNumbers()[getPageNumbers().length - 1] < totalPages && (
+                <>
+                  {getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1 && (
+                    <div className="hidden sm:flex items-center justify-center w-8 h-10">
+                      <span className="text-gray-500 text-sm">⋯</span>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => goToPage(totalPages)}
+                    disabled={isChangingPage}
+                    className="hidden sm:flex items-center justify-center min-w-[40px] h-10 px-3 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-all duration-200 hover:scale-105 disabled:opacity-50"
+                  >
+                    {totalPages}
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Next button */}
+            <button
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages || isChangingPage}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#2f3241] group"
+              aria-label="Next page"
+              title="Go to next page"
+            >
+              <ChevronRight className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            </button>
+
+            {/* Last page button */}
+            <button
+              onClick={goToLastPage}
+              disabled={currentPage === totalPages || isChangingPage}
+              className="hidden sm:flex items-center justify-center w-10 h-10 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#2f3241] group"
+              aria-label="Last page"
+              title="Go to last page"
+            >
+              <ChevronsRight className="w-4 h-4 group-hover:scale-110 transition-transform" />
+            </button>
+          </div>
+
+          {/* Quick page info for desktop */}
+          <div className="hidden md:block text-center">
+            <p className="text-xs text-gray-500">
+              Jump to any page above • {games.length} total games available
+            </p>
+          </div>
         </div>
       )}
     </div>

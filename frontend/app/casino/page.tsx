@@ -7,97 +7,100 @@ import GameSection from '@/components/casino/GameSection';
 import AllGamesSection from '@/components/casino/AllGamesSection';
 import SearchBar from '@/components/ui/SearchBar';
 import Header from '@/components/layout/Header';
+import { CasinoPageSkeleton } from '@/components/ui/SkeletonLoader';
 import { Game, User } from '@/types';
 import { apiService } from '@/services/api';
 
 export default function CasinoPage() {
-  const [games, setGames] = useState<Game[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [allGames, setAllGames] = useState<Game[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState('lobby');
+  const [activeTab, setActiveTab] = useState('All');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const initializePage = async () => {
       try {
-        const [gamesData, userData] = await Promise.all([
-          apiService.getGames(),
-          apiService.getUser()
+        setIsLoading(true);
+        
+        // Load user and games data
+        const [userData, gamesData] = await Promise.all([
+          apiService.getUser(),
+          apiService.getGames()
         ]);
-        setGames(gamesData);
+        
         setUser(userData);
+        setAllGames(gamesData);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        // If user fetch fails, continue without user data
-        try {
-          const gamesData = await apiService.getGames();
-          setGames(gamesData);
-        } catch (gameError) {
-          console.error('Error fetching games:', gameError);
-        }
+        console.error('Failed to load casino data:', error);
       } finally {
-        setLoading(false);
+        // Add a minimum loading time for better UX
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 800);
       }
     };
 
-    fetchData();
+    initializePage();
   }, []);
 
   const handlePlayGame = async (gameId: number) => {
     try {
       const gameUrl = await apiService.startGame(gameId);
-      window.open(gameUrl, '_blank');
+      if (gameUrl) {
+        window.open(gameUrl, '_blank');
+      }
     } catch (error) {
-      console.error('Error starting game:', error);
-      alert('Failed to start game. Please try again.');
+      console.error('Failed to start game:', error);
     }
   };
 
-  const filteredGames = games.filter(game =>
-    game.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // Show loading skeleton while data is being fetched
+  if (isLoading) {
+    return <CasinoPageSkeleton />;
+  }
+
+  // Filter games based on search term
+  const filteredGames = allGames.filter(game =>
+    game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (game.producer && game.producer.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   // Categorize games
-  const stakeOriginals = filteredGames.filter(game => 
-    game.category === 'stake_original' || game.producer === 'Stake'
+  const stakeOriginals = filteredGames.filter((game: Game) => 
+    game.producer?.toLowerCase().includes('stake') || 
+    game.category?.toLowerCase().includes('stake')
   );
-  const slots = filteredGames.filter(game => 
-    game.category === 'slot' || game.category === 'slots'
+  
+  const slots = filteredGames.filter((game: Game) => 
+    game.category?.toLowerCase().includes('slot') ||
+    !game.category
   );
-  const allGames = filteredGames;
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#1a1d29] flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-[#1a1d29]">
+    <div className="min-h-screen bg-[#0f1419]">
       <Header user={user} />
       
       <main className="max-w-7xl mx-auto px-4 py-6">
-        {/* Promotional Banners */}
-        <div className="mb-8">
-          <PromotionalBanners games={games} onPlayGame={handlePlayGame} />
-        </div>
-        
         {/* Search Bar */}
-        <div className="mb-6">
-          <SearchBar 
+        <div className="mb-8">
+          <SearchBar
             value={searchTerm}
             onChange={setSearchTerm}
             placeholder="Search your game"
           />
         </div>
-        
+
         {/* Navigation Tabs */}
-        <div className="mb-8">
-          <NavigationTabs activeTab={activeTab} onTabChange={setActiveTab} />
-        </div>
-        
+        <NavigationTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
+        {/* Promotional Banners */}
+        {searchTerm === '' && (
+          <div className="mb-12">
+            <PromotionalBanners games={allGames} onPlayGame={handlePlayGame} />
+          </div>
+        )}
+
         {/* Game Sections */}
         <div className="space-y-12">
           {stakeOriginals.length > 0 && (
@@ -122,7 +125,7 @@ export default function CasinoPage() {
           
           {/* All Games Section with Pagination */}
           <AllGamesSection 
-            games={allGames}
+            games={filteredGames}
             onPlayGame={handlePlayGame}
           />
         </div>

@@ -305,9 +305,9 @@ export default function CasinoPage() {
                   <h3 className="text-xl font-semibold text-white mb-2">No games found</h3>
                   <p className="text-gray-400 text-center max-w-md">
                     {searchTerm ? (
-                      <>No games match your search "<span className="text-white">{searchTerm}</span>" in this category. Try searching with different keywords.</>
+                      <>No games match your search &ldquo;<span className="text-white">{searchTerm}</span>&rdquo; in this category. Try searching with different keywords.</>
                     ) : (
-                      <>We couldn't find any games in this category at the moment. Check back later or explore other categories.</>
+                      <>We couldn&apos;t find any games in this category at the moment. Check back later or explore other categories.</>
                     )}
                   </p>
                   {searchTerm && (

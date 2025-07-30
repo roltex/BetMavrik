@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { X, CheckCircle, AlertCircle, Loader2, Play, Monitor, Globe, Zap } from 'lucide-react';
 
 interface LogEntry {
@@ -62,7 +62,7 @@ export default function GameLaunchModal({
     }, 100);
   };
 
-  const handleLaunch = async () => {
+  const handleLaunch = useCallback(async () => {
     if (isLaunching) return;
     
     setIsLaunching(true);
@@ -130,7 +130,7 @@ export default function GameLaunchModal({
     } finally {
       setIsLaunching(false);
     }
-  };
+  }, [gameId, gameTitle, isLaunching, onLaunchGame]);
 
   const resetModal = () => {
     setLogs([]);
@@ -152,7 +152,7 @@ export default function GameLaunchModal({
         handleLaunch();
       }, 500);
     }
-  }, [isOpen]);
+  }, [isOpen, isLaunching, logs.length, handleLaunch]);
 
   if (!isOpen) return null;
 
@@ -198,7 +198,7 @@ export default function GameLaunchModal({
           <div className="w-80 bg-[#0f212e] p-6">
             <h3 className="text-sm font-semibold text-white mb-4">Launch Progress</h3>
             <div className="space-y-4">
-              {STEPS.map((step, index) => {
+              {STEPS.map((step) => {
                 const status = getStepStatus(step.id);
                 const Icon = step.icon;
                 

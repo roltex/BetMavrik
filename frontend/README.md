@@ -1,6 +1,14 @@
-# Stake Casino Frontend
+# BetMavrik Casino Frontend
 
 A modern casino frontend built with Next.js 15, TypeScript, and Tailwind CSS, designed to replicate the Stake.com casino interface.
+
+## 🌐 Live URLs
+
+- **🎨 Frontend**: https://betmavrik-frontend.up.railway.app/
+- **🎮 Casino Page**: https://betmavrik-frontend.up.railway.app/casino
+- **🔧 Backend API**: https://betmavrik-backend.up.railway.app/
+
+---
 
 ## Features
 
@@ -54,7 +62,7 @@ frontend/
 
 - Node.js 18+ 
 - npm or yarn
-- Backend server running on http://localhost:3000
+- Backend server running on https://betmavrik-backend.up.railway.app/
 
 ### Installation
 
@@ -66,8 +74,9 @@ npm install
 2. Create environment variables:
 ```bash
 # Create .env.local file
-NEXT_PUBLIC_API_URL=http://localhost:3001
-NEXT_PUBLIC_WS_URL=ws://localhost:3001
+PORT=3001
+NEXT_PUBLIC_API_URL=https://betmavrik-backend.up.railway.app
+NEXT_PUBLIC_WS_URL=wss://betmavrik-backend.up.railway.app
 ```
 
 3. Run the development server:
@@ -79,10 +88,11 @@ npm run dev
 
 ## Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_API_URL` | Backend API URL | `http://localhost:3000` |
-| `NEXT_PUBLIC_WS_URL` | WebSocket server URL | `ws://localhost:3000` |
+| Variable | Description | Production | Local Dev |
+|----------|-------------|------------|-----------|
+| `PORT` | Frontend port | `3001` | `3001` |
+| `NEXT_PUBLIC_API_URL` | Backend API URL | `https://betmavrik-backend.up.railway.app` | `http://localhost:3000` |
+| `NEXT_PUBLIC_WS_URL` | WebSocket server URL | `wss://betmavrik-backend.up.railway.app` | `ws://localhost:3000` |
 
 ## API Integration
 
@@ -136,13 +146,13 @@ npm run start
 
 ## Deployment
 
-### Vercel Deployment
+### Railway Deployment
 
 1. Push to GitHub
-2. Import project in Vercel
+2. Import project in Railway
 3. Set environment variables:
-   - `NEXT_PUBLIC_API_URL`: Your production API URL
-   - `NEXT_PUBLIC_WS_URL`: Your production WebSocket URL
+   - `NEXT_PUBLIC_API_URL`: https://betmavrik-backend.up.railway.app
+   - `NEXT_PUBLIC_WS_URL`: wss://betmavrik-backend.up.railway.app
 4. Deploy
 
 ## Features to Add

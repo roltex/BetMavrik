@@ -2,6 +2,14 @@
 
 A high-performance NestJS backend for the BetMavrik casino platform, featuring real-time game sessions, wallet management, and WebSocket integration.
 
+## 🌐 Live URLs
+
+- **🔧 Backend API**: https://betmavrik-backend.up.railway.app/
+- **🎯 Health Check**: https://betmavrik-backend.up.railway.app/health
+- **🎮 Games Endpoint**: https://betmavrik-backend.up.railway.app/games
+
+---
+
 ## 🚀 Features
 
 - **🎮 Game Management** - Fetch games from All-InGame API with comprehensive field support
@@ -84,7 +92,7 @@ KEY=6JVJ8CNW7NMW2FBHMB84344G1FE4VL
 PRIVATE=8W5pfb0ptu6yDZlSJenQPsE01c1PaN76KTibj7a0Mx
 GCP_URL=https://papiconnector.all-ingame.com/api/casino/
 REDIS_URL=redis://localhost:6379
-RETURN_URL=http://localhost:3000/casino
+RETURN_URL=https://betmavrik-frontend.up.railway.app/casino
 ```
 
 ## 📡 API Endpoints

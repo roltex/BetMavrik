@@ -2,6 +2,14 @@
 
 A fullstack casino platform built with NestJS backend and real All-InGame API integration.
 
+## 🚀 Live URLs
+
+- **🌐 Frontend**: https://betmavrik-frontend.up.railway.app/
+- **🔧 Backend API**: https://betmavrik-backend.up.railway.app/
+- **🎮 Casino Page**: https://betmavrik-frontend.up.railway.app/casino
+
+---
+
 ## 🚀 Features
 
 - **Real GCP API Integration**: Direct integration with All-InGame API

@@ -94,7 +94,7 @@ export default function CasinoPage() {
       });
 
       await new Promise(resolve => setTimeout(resolve, 800));
-
+      
       const gameUrl = await apiService.startGame(gameId);
       
       addLog({
@@ -105,7 +105,7 @@ export default function CasinoPage() {
       });
 
       await new Promise(resolve => setTimeout(resolve, 500));
-
+      
       if (gameUrl) {
         addLog({
           type: 'success',
@@ -218,9 +218,9 @@ export default function CasinoPage() {
       
       <main className="max-w-[1200px] mx-auto px-4 py-6 pt-8">
         {/* Promotional Banners - Always show all games */}
-        <div className="mb-12">
+          <div className="mb-12">
           <PromotionalBanners games={allGames} onPlayGame={openGameModal} />
-        </div>
+          </div>
 
         {/* Search Bar */}
         <div className="mb-8">
@@ -248,27 +248,27 @@ export default function CasinoPage() {
           {activeTab === 'lobby' ? (
             // Lobby view - show category sections
             <>
-              {stakeOriginals.length > 0 && (
-                <GameSection 
-                  title="Stake Originals" 
-                  icon="fire"
-                  games={stakeOriginals.slice(0, 12)}
-                  type="originals"
+          {stakeOriginals.length > 0 && (
+            <GameSection 
+              title="Stake Originals" 
+              icon="fire"
+              games={stakeOriginals.slice(0, 12)}
+              type="originals"
                   onPlayGame={openGameModal}
-                />
-              )}
-              
+            />
+          )}
+          
               {slot.length > 0 && (
-                <GameSection 
+            <GameSection 
                   title="Slot" 
                   icon="slot"
                   games={slot.slice(0, 15)}
                   type="slot"
                   onPlayGame={openGameModal}
-                />
-              )}
-              
-              {/* All Games Section with Pagination */}
+            />
+          )}
+          
+          {/* All Games Section with Pagination */}
               <AllGamesSection 
                 games={searchFilteredGames}
                 onPlayGame={openGameModal}
@@ -290,8 +290,8 @@ export default function CasinoPage() {
               </div>
               
               {filteredGames.length > 0 ? (
-                            <AllGamesSection 
-              games={filteredGames}
+          <AllGamesSection 
+            games={filteredGames}
               onPlayGame={openGameModal}
             />
               ) : (

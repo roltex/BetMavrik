@@ -9,7 +9,7 @@ You are building a fullstack casino platform using:
 - **Frontend**: NextJS (Stake-style UI)
 - **Integration**: All-InGame API (secured with HMAC)
 - **Live Testing**: Real credentials provided
-- **Deployment**: Railway (backend), Vercel (frontend)
+- **Deployment**: Railway (backend), Railway (frontend)
 
 The system will include live session launching, balance tracking, and bet/win/rollback handling.
 
@@ -23,7 +23,7 @@ The system will include live session launching, balance tracking, and bet/win/ro
 | Backend      | NestJS (TypeScript) |
 | State Store  | Redis               |
 | WebSocket    | NestJS Gateway      |
-| Deployment   | Railway / Vercel    |
+| Deployment   | Railway / Railway   |
 | Auth         | HMAC-SHA256 Headers |
 | Tests        | Jest + Supertest    |
 
@@ -98,7 +98,7 @@ allingame-key: <KEY>
 ## 🚀 DEPLOYMENT
 
 ### 🛠️ Railway (NestJS Backend)
-- Hosted at: `https://mtf-nestjs.up.railway.app`
+- Hosted at: `https://betmavrik-backend.up.railway.app/`
 - Required `.env`:
 ```env
 PORT=3000
@@ -108,11 +108,12 @@ GCP_URL=https://papiconnector.all-ingame.com/api/casino/
 REDIS_URL=redis://localhost:6379
 ```
 
-### 🌐 Vercel (NextJS Frontend)
+### 🌐 Railway (NextJS Frontend)
+- Hosted at: `https://betmavrik-frontend.up.railway.app/`
 - Add `.env`:
 ```env
-API_URL=https://mtf-nestjs.up.railway.app
-WS_URL=wss://mtf-nestjs.up.railway.app
+NEXT_PUBLIC_API_URL=https://betmavrik-backend.up.railway.app
+NEXT_PUBLIC_WS_URL=wss://betmavrik-backend.up.railway.app
 ```
 
 ---
@@ -178,5 +179,7 @@ REDIS_URL=redis://localhost:6379
 
 - Real credentials are active
 - Use `localhost:3000` for local tests
-- Use Railway/Vercel for public URLs
+- Use Railway for public URLs:
+  - **Backend**: https://betmavrik-backend.up.railway.app/
+  - **Frontend**: https://betmavrik-frontend.up.railway.app/
 - No mock mode — only live API integration

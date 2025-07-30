@@ -47,24 +47,37 @@ export class UsersService {
   }
 
   async getCurrentUser(): Promise<UserDto> {
-    if (!this.currentUserId) {
-      // If no current user, create one
-      const user = await this.createUser({
-        username: 'demo_user',
-        email: 'demo@betmavrik.com',
-        firstname: 'Demo',
-        lastname: 'User',
-        country: 'US',
-        city: 'New York',
-        date_of_birth: '1990-01-01',
-        registered_at: '2024-01-01',
-        gender: 'm'
-      });
-      this.currentUserId = user.id;
+    try {
+      console.log('👤 getCurrentUser called');
+      console.log('   Current user ID:', this.currentUserId);
+      
+      if (!this.currentUserId) {
+        console.log('⚠️ No current user, creating default user...');
+        // If no current user, create one
+        const user = await this.createUser({
+          username: 'demo_user',
+          email: 'demo@betmavrik.com',
+          firstname: 'Demo',
+          lastname: 'User',
+          country: 'US',
+          city: 'New York',
+          date_of_birth: '1990-01-01',
+          registered_at: '2024-01-01',
+          gender: 'm'
+        });
+        console.log('✅ Default user created:', user);
+        this.currentUserId = user.id;
+        return user;
+      }
+      
+      console.log('📖 Getting existing user...');
+      const user = await this.getUser(this.currentUserId);
+      console.log('✅ Existing user retrieved:', user);
       return user;
+    } catch (error) {
+      console.error('❌ Error in getCurrentUser:', error);
+      throw error;
     }
-    
-    return await this.getUser(this.currentUserId);
   }
 
   async getUser(userId: string): Promise<UserDto | null> {

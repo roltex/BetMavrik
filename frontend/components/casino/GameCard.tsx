@@ -81,17 +81,16 @@ export default function GameCard({ game, onPlay, type = 'slots', isLoading = fal
   }
 
   return (
-    <div 
-      className={`relative bg-[#2f3241] rounded-lg overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-        type === 'originals' ? 'aspect-[4/3]' : 'aspect-[3/4]'
-      }`}
-      onClick={() => onPlay(game.id)}
-    >
-      {/* Game Image */}
-      <div className="relative w-full h-2/3">
+    <div className="group cursor-pointer" onClick={() => onPlay(game.id)}>
+      <div className={`relative overflow-hidden rounded-lg bg-[#2f3241] ${
+        type === 'originals' ? 'aspect-[3/4]' : 'aspect-[4/5]'
+      }`}>
+        {/* Loading skeleton */}
         {!imageLoaded && !imageError && (
           <Skeleton className="absolute inset-0 w-full h-full rounded-lg" />
         )}
+
+        {/* Game thumbnail */}
         {!imageError && (
           <Image
             src={getThumbnail()}
@@ -106,29 +105,33 @@ export default function GameCard({ game, onPlay, type = 'slots', isLoading = fal
             unoptimized
           />
         )}
+
+        {/* Fallback for broken images */}
         {imageError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-            <div className="text-white text-center p-2">
-              <div className="text-lg font-bold mb-1">🎮</div>
-              <div className="text-xs">{game.title}</div>
+          <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+            <div className="text-center text-gray-400">
+              <div className="text-xs font-medium">{game.title}</div>
+              <div className="text-xs opacity-75 mt-1">Image unavailable</div>
             </div>
           </div>
         )}
         
-        {/* Play Button */}
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
-          <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100">
-            <div className="w-0 h-0 border-l-[8px] border-l-white border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent ml-1"></div>
+        {/* Play button overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-200 flex items-center justify-center">
+          <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 transform scale-90 group-hover:scale-100">
+            <div className="w-0 h-0 border-l-[8px] border-l-black border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent ml-1"></div>
           </div>
         </div>
       </div>
 
-      {/* Game Info */}
-      <div className="p-3 h-1/3 flex flex-col justify-between">
-        <div>
-          <h3 className="text-white text-sm font-medium truncate mb-1">{game.title}</h3>
-          <p className="text-gray-400 text-xs truncate">{game.producer || 'Unknown'}</p>
-        </div>
+      {/* Game info */}
+      <div className="mt-2 px-1">
+        <h3 className="text-sm font-medium text-white truncate" title={game.title}>
+          {game.title}
+        </h3>
+        <p className="text-xs text-gray-400 truncate">
+          {game.producer || 'Unknown'}
+        </p>
         
         {/* Action Buttons */}
         <div className="flex gap-2 mt-2">

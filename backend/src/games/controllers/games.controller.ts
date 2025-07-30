@@ -18,14 +18,50 @@ export class GamesController {
   @Post()
   async createGameSession(@Body() sessionDto: CreateGameSessionDto): Promise<GameSessionDto> {
     try {
-      // Get current user data dynamically
-      const userData = await this.usersService.getCurrentUser();
+      console.log('🎮 POST /games endpoint called');
+      console.log('📥 Request body:', JSON.stringify(sessionDto, null, 2));
       
-      return await this.gamesService.createGameSession(sessionDto, userData);
+      // Get current user data dynamically
+      console.log('👤 Getting current user data...');
+      const userData = await this.usersService.getCurrentUser();
+      console.log('✅ User data retrieved:', {
+        id: userData.id,
+        username: userData.username,
+        hasFirstname: !!userData.firstname,
+        hasLastname: !!userData.lastname,
+        hasCountry: !!userData.country,
+        hasCity: !!userData.city,
+        hasDateOfBirth: !!userData.date_of_birth,
+        hasRegisteredAt: !!userData.registered_at,
+        hasGender: !!userData.gender
+      });
+      
+      console.log('🚀 Calling games service...');
+      const result = await this.gamesService.createGameSession(sessionDto, userData);
+      console.log('✅ Games service succeeded:', result);
+      
+      return result;
     } catch (error) {
+      console.error('❌ DETAILED ERROR in createGameSession:');
+      console.error('   Error type:', error.constructor.name);
+      console.error('   Error message:', error.message);
+      console.error('   Error stack:', error.stack);
+      
+      if (error.response) {
+        console.error('   HTTP Response Status:', error.response.status);
+        console.error('   HTTP Response Data:', error.response.data);
+        console.error('   HTTP Response Headers:', error.response.headers);
+      }
+      
+      console.error('   Full error object:', error);
       console.error('Failed to get user data for session creation:', error);
+      
       throw new HttpException(
-        'Failed to create game session',
+        {
+          message: 'Failed to create game session',
+          error: error.message,
+          details: error.response?.data || 'No additional details'
+        },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

@@ -17,19 +17,20 @@ export function GameCardSkeleton({ type = "slots" }: { type?: "slots" | "origina
       <div className={`relative overflow-hidden rounded-lg bg-[#2f3241] ${
         type === 'originals' ? 'aspect-[3/4]' : 'aspect-[4/5]'
       }`}>
-        {/* Image skeleton */}
         <Skeleton className="absolute inset-0 w-full h-full rounded-lg" />
         
-        {/* Play button overlay */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-200 flex items-center justify-center">
           <Skeleton className="w-12 h-12 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
         </div>
       </div>
       
-      {/* Game title */}
       <div className="mt-2 px-1">
         <Skeleton className="h-4 w-3/4 mb-1" />
-        <Skeleton className="h-3 w-1/2" />
+        <Skeleton className="h-3 w-1/2 mb-2" />
+        <div className="flex gap-2">
+          <Skeleton className="flex-1 h-6 rounded" />
+          <Skeleton className="w-8 h-6 rounded" />
+        </div>
       </div>
     </div>
   );

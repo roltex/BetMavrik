@@ -22,6 +22,9 @@ export class BalanceService {
       return userBalance;
     } catch (error) {
       console.error(`❌ Error getting balance for user ${userId}:`, error);
+      console.error('   Error type:', error.constructor.name);
+      console.error('   Error message:', error.message);
+      console.error('   Error stack:', error.stack);
       return 1000; // Default balance on error
     }
   }

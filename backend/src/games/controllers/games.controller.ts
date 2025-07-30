@@ -82,4 +82,53 @@ export class GamesController {
       );
     }
   }
+
+  @Get('debug')
+  async debugStatus() {
+    try {
+      console.log('🔧 Debug endpoint called');
+      
+      // Check user service
+      const userData = await this.usersService.getCurrentUser();
+      console.log('✅ User data retrieved for debug:', userData);
+      
+      // Check environment variables
+      const envStatus = {
+        GCP_URL: !!process.env.GCP_URL,
+        GCP_URL_value: process.env.GCP_URL,
+        KEY: !!process.env.KEY,
+        PRIVATE: !!process.env.PRIVATE,
+        REDIS_URL: !!process.env.REDIS_URL,
+        RETURN_URL: process.env.RETURN_URL
+      };
+      
+      return {
+        status: 'DEBUG_INFO',
+        user: {
+          id: userData.id,
+          username: userData.username,
+          balance: userData.balance,
+          hasAllFields: {
+            firstname: !!userData.firstname,
+            lastname: !!userData.lastname,
+            country: !!userData.country,
+            city: !!userData.city,
+            date_of_birth: !!userData.date_of_birth,
+            registered_at: !!userData.registered_at,
+            gender: !!userData.gender
+          }
+        },
+        environment: envStatus,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('❌ Debug endpoint error:', error);
+      return {
+        status: 'ERROR',
+        error: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
 } 

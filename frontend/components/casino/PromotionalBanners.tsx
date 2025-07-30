@@ -135,8 +135,8 @@ function PromotionalBanner({ game, onPlayGame }: { game: Game; onPlayGame?: (gam
       
       {/* Loading skeleton */}
       {!imageLoaded && !imageError && (
-        <div className="absolute inset-0 bg-gray-700 animate-pulse">
-          <div className="w-full h-full bg-gradient-to-r from-gray-600 to-gray-500"></div>
+        <div className="absolute inset-0 bg-[#0f212e] animate-pulse">
+          <div className="w-full h-full bg-gradient-to-r from-[#0f212e] to-[#1a2c38]"></div>
         </div>
       )}
 

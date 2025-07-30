@@ -9,7 +9,7 @@ A modern casino frontend built with Next.js 15, TypeScript, and Tailwind CSS, de
 - 💰 **Live Balance Updates**: WebSocket integration for real-time balance updates
 - 🎨 **Stake-like UI**: Dark theme matching Stake.com design
 - 📱 **Responsive Design**: Works on all device sizes
-- 🎮 **Game Categories**: Organized by Stake Originals, Slots, and Providers
+- 🎮 **Game Categories**: Organized by Stake Originals, slot, and Providers
 - 🎯 **Promotional Banners**: Swiper-based carousel for promotions
 
 ## Tech Stack
@@ -107,7 +107,7 @@ The frontend integrates with the backend API for:
 
 ### GameSection
 - Horizontal scrolling game display
-- Different layouts for game types (originals vs slots)
+- Different layouts for game types (originals vs slot)
 - Smooth scroll navigation
 
 ### GameCard

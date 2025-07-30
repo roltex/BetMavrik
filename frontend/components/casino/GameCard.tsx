@@ -9,11 +9,11 @@ import { Skeleton } from '@/components/ui/SkeletonLoader';
 interface GameCardProps {
   game: Game;
   onPlay: (gameId: number) => void;
-  type?: 'slots' | 'originals';
+  type?: 'slot' | 'originals';
   isLoading?: boolean;
 }
 
-export default function GameCard({ game, onPlay, type = 'slots', isLoading = false }: GameCardProps) {
+export default function GameCard({ game, onPlay, type = 'slot', isLoading = false }: GameCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -62,7 +62,7 @@ export default function GameCard({ game, onPlay, type = 'slots', isLoading = fal
   if (isLoading) {
     return (
       <div className="group cursor-pointer">
-        <div className={`relative overflow-hidden rounded-lg bg-[#2f3241] ${
+        <div className={`relative overflow-hidden rounded-lg bg-[#0f212e] ${
           type === 'originals' ? 'aspect-[3/4]' : 'aspect-[4/5]'
         }`}>
           <Skeleton className="absolute inset-0 w-full h-full rounded-lg" />
@@ -82,7 +82,7 @@ export default function GameCard({ game, onPlay, type = 'slots', isLoading = fal
 
   return (
     <div className="group cursor-pointer" onClick={() => onPlay(game.id)}>
-      <div className={`relative overflow-hidden rounded-lg bg-[#2f3241] ${
+      <div className={`relative overflow-hidden rounded-lg bg-[#0f212e] ${
         type === 'originals' ? 'aspect-[3/4]' : 'aspect-[4/5]'
       }`}>
         {/* Loading skeleton */}

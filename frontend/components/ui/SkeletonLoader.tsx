@@ -4,17 +4,17 @@ import React from 'react';
 export function Skeleton({ className = "", ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`animate-pulse bg-gray-700 rounded ${className}`}
+      className={`animate-pulse bg-[#0f212e] rounded ${className}`}
       {...props}
     />
   );
 }
 
 // Game card skeleton
-export function GameCardSkeleton({ type = "slots" }: { type?: "slots" | "originals" }) {
+export function GameCardSkeleton({ type = "slot" }: { type?: "slot" | "originals" }) {
   return (
     <div className="group cursor-pointer">
-      <div className={`relative overflow-hidden rounded-lg bg-[#2f3241] ${
+      <div className={`relative overflow-hidden rounded-lg bg-[#0f212e] ${
         type === 'originals' ? 'aspect-[3/4]' : 'aspect-[4/5]'
       }`}>
         <Skeleton className="absolute inset-0 w-full h-full rounded-lg" />
@@ -39,7 +39,7 @@ export function GameCardSkeleton({ type = "slots" }: { type?: "slots" | "origina
 // Promotional banner skeleton
 export function PromotionalBannerSkeleton() {
   return (
-    <div className="relative h-48 rounded-lg overflow-hidden bg-[#2f3241]">
+    <div className="relative h-48 rounded-lg overflow-hidden bg-[#0f212e]">
       {/* Background skeleton */}
       <Skeleton className="absolute inset-0 w-full h-full" />
       
@@ -144,7 +144,7 @@ export function AllGamesSectionSkeleton() {
 // Header skeleton
 export function HeaderSkeleton() {
   return (
-    <header className="bg-[#1a1c2e] border-b border-[#2f3241]">
+    <header className="bg-[#1a1c2e] border-b border-[#0f212e]">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo skeleton */}
@@ -164,7 +164,7 @@ export function HeaderSkeleton() {
 // Casino page loading skeleton
 export function CasinoPageSkeleton() {
   return (
-    <div className="min-h-screen bg-[#0f1419]">
+    <div className="min-h-screen bg-[#1a2c38]">
       <HeaderSkeleton />
       
       <main className="max-w-7xl mx-auto px-4 py-6">

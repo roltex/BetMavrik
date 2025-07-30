@@ -30,8 +30,8 @@ export default function Header({ user }: HeaderProps) {
   }, [user]);
 
   return (
-    <header className="bg-[#1a1d29] border-b border-[#2f3241]">
-      <div className="max-w-7xl mx-auto px-4">
+    <header className="sticky top-0 z-50 bg-[#1a2c38] shadow-xl backdrop-blur-sm">
+      <div className="max-w-[1200px] mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
@@ -49,7 +49,7 @@ export default function Header({ user }: HeaderProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-[#0f212e] rounded-full flex items-center justify-center">
                     <span className="text-white font-semibold">
                       {user.username.charAt(0).toUpperCase()}
                     </span>

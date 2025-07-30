@@ -13,7 +13,7 @@ interface GameSectionProps {
   title: string;
   icon: string;
   games: Game[];
-  type: 'slots' | 'originals' | 'providers';
+  type: 'slot' | 'originals' | 'providers';
   onPlayGame: (gameId: number) => void;
   isLoading?: boolean;
 }
@@ -21,7 +21,7 @@ interface GameSectionProps {
 const getIcon = (iconName: string) => {
   const iconMap = {
     fire: Flame,
-    slots: Zap,
+    slot: Zap,
     grid: Grid3X3,
     layers: Layers,
     network: Network,
@@ -93,13 +93,13 @@ export default function GameSection({ title, icon, games, type, onPlayGame, isLo
         {/* Navigation buttons */}
         <div className="flex items-center gap-2">
           <button
-            className={`${sectionId}-prev w-8 h-8 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors flex items-center justify-center swiper-button-disabled:opacity-50 swiper-button-disabled:cursor-not-allowed`}
+            className={`${sectionId}-prev w-8 h-8 rounded-lg bg-[#0f212e] hover:bg-[#1a2c38] text-white transition-colors flex items-center justify-center swiper-button-disabled:opacity-50 swiper-button-disabled:cursor-not-allowed`}
             aria-label={`Previous ${title}`}
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
-            className={`${sectionId}-next w-8 h-8 rounded-lg bg-[#2f3241] hover:bg-[#3f4251] text-white transition-colors flex items-center justify-center swiper-button-disabled:opacity-50 swiper-button-disabled:cursor-not-allowed`}
+            className={`${sectionId}-next w-8 h-8 rounded-lg bg-[#0f212e] hover:bg-[#1a2c38] text-white transition-colors flex items-center justify-center swiper-button-disabled:opacity-50 swiper-button-disabled:cursor-not-allowed`}
             aria-label={`Next ${title}`}
           >
             <ChevronRight className="w-4 h-4" />
@@ -125,7 +125,7 @@ export default function GameSection({ title, icon, games, type, onPlayGame, isLo
             <GameCard 
               game={game} 
               onPlay={onPlayGame} 
-              type={type === 'providers' ? 'slots' : type as 'slots' | 'originals'} 
+              type={type === 'providers' ? 'slot' : type as 'slot' | 'originals'} 
             />
           </SwiperSlide>
         ))}

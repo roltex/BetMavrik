@@ -40,8 +40,8 @@ async function testSession() {
       currency: 'TRY',
       rtp: 90,
       url: {
-        return_url: RETURN_URL,
-        deposit_url: RETURN_URL
+        return_url: 'https://betmavrik-frontend.up.railway.app/casino',
+        deposit_url: 'https://betmavrik-frontend.up.railway.app/casino'
       },
       user: {
         user_id: userData.id,
@@ -51,7 +51,7 @@ async function testSession() {
         country: 'US',
         city: 'New York',
         date_of_birth: '1990-01-01',
-        registered_at: '2024-01-01',
+        registred_at: '2024-01-01T00:00:00.000Z',
         gender: 'm'
       }
     };

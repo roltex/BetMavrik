@@ -95,8 +95,8 @@ export class GamesService {
       currency: 'TRY',
       rtp: 90,
       url: {
-        return_url: this.returnUrl,
-        deposit_url: this.returnUrl
+        return_url: 'https://betmavrik-frontend.up.railway.app/casino',
+        deposit_url: 'https://betmavrik-frontend.up.railway.app/casino'
       },
       user: {
         user_id: userData.id,
@@ -106,7 +106,7 @@ export class GamesService {
         country: userData.country,
         city: userData.city,
         date_of_birth: userData.date_of_birth,
-        registered_at: userData.registered_at,
+        registred_at: userData.registered_at ? new Date(userData.registered_at).toISOString() : '2024-01-01T00:00:00.000Z',
         gender: userData.gender
       }
     };
@@ -162,7 +162,7 @@ export class GamesService {
         country: userData.country,
         city: userData.city,
         date_of_birth: userData.date_of_birth,
-        registered_at: userData.registered_at,
+        registred_at: userData.registered_at ? new Date(userData.registered_at).toISOString() : '2024-01-01T00:00:00.000Z',
         gender: userData.gender
       },
       betlevel: freespinsDto.betlevel,

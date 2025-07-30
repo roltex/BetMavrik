@@ -83,6 +83,62 @@ export class GamesController {
     }
   }
 
+  @Post('test-session')
+  async testGameSession(@Body() sessionDto: CreateGameSessionDto) {
+    try {
+      console.log('🧪 TEST: Game session creation test');
+      console.log('📥 Request:', sessionDto);
+      
+      // Get user data
+      const userData = await this.usersService.getCurrentUser();
+      console.log('👤 User data:', userData);
+      
+      // Check the exact session data we're sending to All-InGame
+      const sessionData = {
+        game_id: sessionDto.game_id,
+        locale: 'en',
+        client_type: 'desktop',
+        ip: '127.0.0.1',
+        currency: 'TRY',
+        rtp: 90,
+        url: {
+          return_url: process.env.RETURN_URL || 'https://betmavrik-frontend.up.railway.app/casino',
+          deposit_url: process.env.RETURN_URL || 'https://betmavrik-frontend.up.railway.app/casino'
+        },
+        user: {
+          user_id: userData.id,
+          nickname: userData.username,
+          firstname: userData.firstname,
+          lastname: userData.lastname,
+          country: userData.country,
+          city: userData.city,
+          date_of_birth: userData.date_of_birth,
+          registered_at: userData.registered_at,
+          gender: userData.gender
+        }
+      };
+      
+      console.log('📤 Session data to send to All-InGame:', JSON.stringify(sessionData, null, 2));
+      
+      return {
+        status: 'TEST_PREPARATION_SUCCESS',
+        sessionData: sessionData,
+        gcpUrl: process.env.GCP_URL,
+        willCallUrl: `${process.env.GCP_URL}session`,
+        timestamp: new Date().toISOString()
+      };
+      
+    } catch (error) {
+      console.error('❌ Test session preparation failed:', error);
+      return {
+        status: 'TEST_PREPARATION_ERROR',
+        error: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
   @Get('debug')
   async debugStatus() {
     try {
@@ -99,7 +155,8 @@ export class GamesController {
         KEY: !!process.env.KEY,
         PRIVATE: !!process.env.PRIVATE,
         REDIS_URL: !!process.env.REDIS_URL,
-        RETURN_URL: process.env.RETURN_URL
+        RETURN_URL: !!process.env.RETURN_URL,
+        RETURN_URL_value: process.env.RETURN_URL || 'NOT_SET - USING_FALLBACK'
       };
       
       return {
